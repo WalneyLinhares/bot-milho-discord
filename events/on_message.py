@@ -2,7 +2,7 @@ import discord
 import time
 from discord import Message
 from utils.caps_detector import is_caps_lock
-from utils.meta_ai_client import perguntar_ia
+from utils.ai_client import perguntar_ia
 from config import OWNER_ID, EXEMPT_ROLES
 
 ultimo_aviso_caps = {}
@@ -55,7 +55,6 @@ async def handle_caps_lock(message):
 async def handle_reply_to_bot(bot, message: Message):
     """Responde automaticamente quando alguém responde ao bot, mantendo contexto."""
     
-    # precisa ter referência
     if not message.reference:
         return
     
@@ -63,23 +62,15 @@ async def handle_reply_to_bot(bot, message: Message):
         replied_message = await message.channel.fetch_message(message.reference.message_id)
     except:
         return
-    
-    # só responde se foi o bot que foi respondido
+
     if replied_message.author != bot.user:
         return
-    
-    # montar contexto enterprise
-    # resumo: meta ai vai saber o que ela falou antes e o que o humano respondeu
-    texto = (
-        "[CONTEXT=USER_IS_REPLYING_TO_BOT]\n"
-        f"[BOT_LAST_MESSAGE]: {replied_message.content}\n"
-        f"[USER_REPLY]: {message.content.strip()}"
-    )
-    
+
     async with message.channel.typing():
         try:
+            # chama a IA direto com a mensagem do usuário
             resposta = perguntar_ia(
-                texto,
+                message.content.strip(),
                 usuario_id=message.author.id,
                 usuario_nome=message.author.display_name
             )

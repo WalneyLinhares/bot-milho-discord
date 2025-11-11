@@ -1,5 +1,5 @@
 from discord.ext import commands
-from utils.meta_ai_client import perguntar_ia
+from utils.ai_client import perguntar_ia
 
 def setup_commands(bot: commands.Bot):
     
