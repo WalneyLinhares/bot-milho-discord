@@ -11,8 +11,8 @@ from threading import Thread
 
 app = Flask(__name__)
 
-# ➜ ROTA NOVA: usada para manter online
-@app.route("/wake")
+#ROTA: usada para manter online
+@app.route("/wake", methods=["GET", "POST"])
 def wake():
     print("alive")
     return "alive"
