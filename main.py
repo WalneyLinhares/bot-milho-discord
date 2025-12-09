@@ -11,9 +11,11 @@ from threading import Thread
 
 app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return "ok"
+# ➜ ROTA NOVA: usada para manter online
+@app.route("/wake")
+def wake():
+    print("alive")
+    return "alive"
 
 def run_web():
     port = int(os.environ.get("PORT", 5000))
